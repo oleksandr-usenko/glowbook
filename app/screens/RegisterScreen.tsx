@@ -1,7 +1,7 @@
 import {TRootStackParamsList} from "@/app/screens/types";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {useState} from "react";
-import {UIInput} from "@/app/components/UIInput";
+import {UIInput} from "@/app/components/UI/UIInput";
 import {Button, Card} from "react-native-paper";
 import {View} from "react-native";
 

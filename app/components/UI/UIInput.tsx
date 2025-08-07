@@ -1,16 +1,14 @@
 import React, { forwardRef } from 'react';
 import { View, Text, TextInput as RNTextInput } from 'react-native';
-import { TextInput, TextInputProps } from 'react-native-paper';
+import {TextInput, TextInputProps, useTheme} from 'react-native-paper';
 
 type UIInputProps = {
     helperText?: string;
     errorMessage?: string | null;
-    left?: React.ReactNode;
-    right?: React.ReactNode;
 } & TextInputProps;
 
 export const UIInput = forwardRef<RNTextInput, UIInputProps>(
-    ({ errorMessage, helperText, left, right, style, ...rest }, ref) => {
+    ({ errorMessage, helperText, style, ...rest }, ref) => {
         const isError = !!errorMessage || rest.error;
 
         return (
@@ -19,8 +17,6 @@ export const UIInput = forwardRef<RNTextInput, UIInputProps>(
                     mode="outlined"
                     ref={ref}
                     error={isError}
-                    left={left ? <TextInput.Icon icon={() => left} /> : undefined}
-                    right={right ? <TextInput.Icon icon={() => right} /> : undefined}
                     {...rest}
                 />
                 {(helperText || errorMessage) && (

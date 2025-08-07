@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    background-color: rgb(255, 246, 241);
+    border-radius: 12px;
+    /*border-width: 1px;*/
+    border-color: rgb(231, 215, 205);
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    /*-webkit-text-fill-color: #D88F6F !important;*/
+    transition: background-color 5000s ease-in-out 0s;
+    /*caret-color: #D88F6F;*/
+    /*-webkit-box-shadow: 0 0 0 1000px rgb(255, 246, 241) inset !important; !* replace white with your bg if needed *!*/
+    /*box-shadow: 0 0 0 1000px rgb(255, 246, 241) inset !important;*/
+}
+
+input:-webkit-autofill::first-line {
+    font-size: 16px !important;
+}

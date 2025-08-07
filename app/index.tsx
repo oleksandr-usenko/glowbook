@@ -5,8 +5,16 @@ import {TRootStackParamsList} from "@/app/screens/types";
 import RegisterScreen from "@/app/screens/RegisterScreen";
 import HomeScreen from "@/app/screens/HomeScreen";
 import {DefaultTheme, PaperProvider} from "react-native-paper";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {setAuthHeader} from "@/app/interceptors/refresh.interceptor";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {useEffect} from "react";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 const Stack = createNativeStackNavigator<TRootStackParamsList>();
+
+const queryClient = new QueryClient();
 
 export const customTheme = {
     ...DefaultTheme,
@@ -66,15 +74,29 @@ export const customTheme = {
     roundness: 12,
 };
 
+const initializeAuthHeader = async () => {
+    const token = await AsyncStorage.getItem("accessToken")
+    setAuthHeader(token || "");
+}
+
 
 export default function Index() {
+    useEffect(() => {
+        initializeAuthHeader();
+    }, [])
+
   return (
-      <PaperProvider theme={customTheme}>
-          <Stack.Navigator initialRouteName="Login">
-              <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen name="Register" component={RegisterScreen} />
-              <Stack.Screen name="Home" component={HomeScreen} />
-          </Stack.Navigator>
-      </PaperProvider>
+      <QueryClientProvider client={queryClient}>
+          <PaperProvider
+              theme={customTheme}
+              settings={{ icon: (props) => <MaterialCommunityIcons {...props} /> }}
+          >
+                  <Stack.Navigator initialRouteName="Login">
+                      <Stack.Screen name="Login" component={LoginScreen} />
+                      <Stack.Screen name="Register" component={RegisterScreen} />
+                      <Stack.Screen name="Home" component={HomeScreen} />
+                  </Stack.Navigator>
+          </PaperProvider>
+      </QueryClientProvider>
   );
 }
