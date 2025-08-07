@@ -1,7 +1,9 @@
 import {TRootStackParamsList} from "@/app/screens/types";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {Button, Text, TextInput, View} from "react-native";
 import {useState} from "react";
+import {UIInput} from "@/app/components/UIInput";
+import {Button, Card} from "react-native-paper";
+import {View} from "react-native";
 
 type Props = NativeStackScreenProps<TRootStackParamsList, "Register">;
 
@@ -15,15 +17,16 @@ export default function RegisterScreen({ navigation }: Props){
     }
 
     return (
-        <View style={{ padding: 20 }}>
-            <Text>Email</Text>
-            <TextInput value={email} onChangeText={setEmail} autoCapitalize="none" />
-            <Text>Password</Text>
-            <TextInput value={password} onChangeText={setPassword} secureTextEntry />
-            <Text>Repeat password</Text>
-            <TextInput value={repeatPassword} onChangeText={setRepeatPassword} secureTextEntry />
-            <Button title="Login" onPress={handleRegister} />
-            <Button title="Login" onPress={() => navigation.navigate('Login')} />
+        <View className="p-5">
+            <Card>
+                <Card.Content className="flex flex-col gap-2">
+                    <UIInput label="Email" value={email} onChangeText={setEmail} />
+                    <UIInput label="Password" value={password} onChangeText={setPassword} secureTextEntry />
+                    <UIInput label="Repeat password" value={repeatPassword} onChangeText={setRepeatPassword} secureTextEntry />
+                    <Button mode="contained" onPress={handleRegister}>Register</Button>
+                    <Button onPress={() => navigation.navigate('Login')}>Back to login</Button>
+                </Card.Content>
+            </Card>
         </View>
     )
 }
