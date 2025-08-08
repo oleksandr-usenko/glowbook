@@ -1,18 +1,13 @@
 import "./global.css";
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import LoginScreen from "@/app/screens/LoginScreen";
-import {TRootStackParamsList} from "@/app/screens/types";
-import RegisterScreen from "@/app/screens/RegisterScreen";
-import HomeScreen from "@/app/screens/HomeScreen";
 import {DefaultTheme, PaperProvider} from "react-native-paper";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {setAuthHeader} from "@/app/interceptors/refresh.interceptor";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useEffect} from "react";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import AppNavigator from "@/app/navigation/Navigation";
+import {AuthProvider} from "@/app/context/AuthContext";
 
-
-const Stack = createNativeStackNavigator<TRootStackParamsList>();
 
 const queryClient = new QueryClient();
 
@@ -91,11 +86,9 @@ export default function Index() {
               theme={customTheme}
               settings={{ icon: (props) => <MaterialCommunityIcons {...props} /> }}
           >
-                  <Stack.Navigator initialRouteName="Login">
-                      <Stack.Screen name="Login" component={LoginScreen} />
-                      <Stack.Screen name="Register" component={RegisterScreen} />
-                      <Stack.Screen name="Home" component={HomeScreen} />
-                  </Stack.Navigator>
+              <AuthProvider>
+                <AppNavigator />
+              </AuthProvider>
           </PaperProvider>
       </QueryClientProvider>
   );

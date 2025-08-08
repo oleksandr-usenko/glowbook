@@ -2,6 +2,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HTTP, SERVER_BASE } from '../services/http';
+import {getToken, setToken} from "@/app/utils/authStorage";
 
 let isRefreshing = false;
 let failedQueue: {
@@ -50,7 +51,7 @@ HTTP.interceptors.response.use(
 
             return new Promise(async (resolve, reject) => {
                 try {
-                    const refreshToken = await AsyncStorage.getItem('refreshToken');
+                    const refreshToken = await getToken('refreshToken');
 
                     if (!refreshToken) {
                         throw new Error('No refresh token found');
@@ -67,7 +68,7 @@ HTTP.interceptors.response.use(
 
                     const newToken = res.data.accessToken;
 
-                    await AsyncStorage.setItem('accessToken', newToken);
+                    await setToken('accessToken', newToken);
                     setAuthHeader(newToken);
                     processQueue(null, newToken);
 

@@ -1,34 +1,41 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Icon } from 'react-native-paper';
+import * as React from 'react';
+import { Text } from 'react-native';
+import {Appbar, BottomNavigation, useTheme} from 'react-native-paper';
+import {useState} from "react";
 
-import HomeScreen from '../screens/HomeScreen';
-import CalendarScreen from '../screens/CalendarScreen';
-import ServicesScreen from "../screens/ServicesScreen";
-import {TRootStackParamsList} from "@/app/screens/types";
+const HomeRoute = () => <Text>Home</Text>;
+const CalendarRoute = () => <Text>Calendar</Text>;
+const ServicesRoute = () => <Text>Services</Text>;
 
-const Tab = createBottomTabNavigator<TRootStackParamsList>();
+export default function AppTabs() {
+    const theme = useTheme();
+    const [index, setIndex] = useState(0);
+    const [routes] = useState([
+        { key: 'home', title: 'Home', focusedIcon: 'home' },
+        { key: 'calendar', title: 'Calendar', focusedIcon: 'calendar' },
+        { key: 'services', title: 'Services', focusedIcon: 'brush' },
+    ]);
 
-const HomeTabs = () => {
-    return (
-        <Tab.Navigator
-            screenOptions={({ route }) => ({
-                tabBarIcon: ({ color, size }) => {
-                    let icon = 'home';
+    const renderScene = BottomNavigation.SceneMap({
+        home: HomeRoute,
+        calendar: CalendarRoute,
+        services: ServicesRoute,
+    });
 
-                    if (route.name === 'Calendar') icon = 'calendar';
-                    if (route.name === 'Services') icon = 'brush';
-
-                    return <Icon source={icon} size={size} color={color} />;
-                },
-                headerShown: false,
-            })}
-        >
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Calendar" component={CalendarScreen} />
-            <Tab.Screen name="Services" component={ServicesScreen} />
-        </Tab.Navigator>
+    return (<>
+        <Appbar.Header elevated={true} style={{
+            backgroundColor: theme.colors.primary,
+        }}>
+            <Appbar.Content style={{ elevation: 8 }} title={routes[index].title} />
+        </Appbar.Header>
+        <BottomNavigation
+            sceneAnimationEnabled={true}
+            navigationState={{ index, routes }}
+            onIndexChange={setIndex}
+            renderScene={renderScene}
+            shifting={false}
+            barStyle={{ height: 72, backgroundColor: theme.colors.primary }}
+        />
+    </>
     );
-};
-
-export default HomeTabs;
+}

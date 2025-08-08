@@ -6,8 +6,7 @@ import {TRootStackParamsList} from "@/app/screens/types";
 import {Card, Button, TextInput} from "react-native-paper";
 import {UIInput} from "@/app/components/UI/UIInput";
 import {login} from "@/app/services/auth";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import {setAccessToken, setRefreshToken, setToken} from "@/app/utils/authStorage";
 
 
 
@@ -18,10 +17,10 @@ export default function LoginScreen({ navigation }: Props){
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-        // TODO: authenticate
         login({ email, password }).then(async (result) => {
             console.log(result);
-            await AsyncStorage.setItem("accessToken", result.data.token);
+            await setToken("accessToken", result.data.token);
+            await setToken("refreshToken", result.data.refreshToken);
             navigation.replace('Home');
         });
     };
