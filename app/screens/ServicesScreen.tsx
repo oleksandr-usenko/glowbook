@@ -1,15 +1,23 @@
-import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {TRootStackParamsList} from "@/app/screens/types";
-import {View} from "react-native";
-import { Text } from "react-native-paper";
+import {ScrollView} from "react-native";
+import {useGetServices} from "@/app/entities/services/useGetServices";
+import {useEffect} from "react";
+import {ServiceItem} from "@/app/entities/services/ServiceItem";
+import {TService} from "@/app/entities/services/types";
 
-type Props = NativeStackScreenProps<TRootStackParamsList, "Services">
+const ServiceWrapper = (service: TService) =>
+    <div key={service.id} className="mb-4">
+        <ServiceItem service={service} />
+    </div>
 
+export default function ServicesScreen() {
+    const { data: services } = useGetServices();
+    useEffect(() => {
+        console.log(services);
+    }, [services])
 
-export default function ServicesScreen({ navigation }: Props) {
     return (
-        <View>
-            <Text>Services</Text>
-        </View>
+        <ScrollView className="flex flex-col gap-4 p-4">
+            {services && services.map(ServiceWrapper)}
+        </ScrollView>
     )
 }

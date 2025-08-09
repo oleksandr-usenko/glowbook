@@ -1,6 +1,5 @@
 // httpInterceptor.ts
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HTTP, SERVER_BASE } from '../services/http';
 import {getToken, setToken} from "@/app/utils/authStorage";
 
@@ -59,8 +58,7 @@ HTTP.interceptors.response.use(
 
                     const res = await axios.post(
                         `${SERVER_BASE}/api/auth/refresh`,
-                        { refreshToken }, // If you use JSON body
-                        // {}, // If your backend expects no body and uses HttpOnly cookies (not RN-friendly)
+                        { refreshToken },
                         {
                             headers: { 'Content-Type': 'application/json' },
                         }

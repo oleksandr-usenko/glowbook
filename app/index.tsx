@@ -7,6 +7,7 @@ import {useEffect} from "react";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AppNavigator from "@/app/navigation/Navigation";
 import {AuthProvider} from "@/app/context/AuthContext";
+import {getToken} from "@/app/utils/authStorage";
 
 
 const queryClient = new QueryClient();
@@ -70,7 +71,7 @@ export const customTheme = {
 };
 
 const initializeAuthHeader = async () => {
-    const token = await AsyncStorage.getItem("accessToken")
+    const token = await getToken("accessToken")
     setAuthHeader(token || "");
 }
 

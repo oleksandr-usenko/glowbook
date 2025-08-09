@@ -1,16 +1,9 @@
-import {Button, View, Text} from "react-native";
-import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {TRootStackParamsList} from "@/app/screens/types";
-import HomeTabs from "@/app/components/HomeTabs";
+import {View, Text} from "react-native";
 
-type Props = NativeStackScreenProps<TRootStackParamsList, "Home">
-
-export default function HomeScreen({ navigation }: Props){
+export default function HomeScreen(){
     return (
         <View>
             <Text>Home</Text>
-            <Button title="Logout" onPress={() => navigation.navigate('Login')} />
-            {/*<HomeTabs />*/}
         </View>
     )
 }

@@ -1,19 +1,26 @@
 import * as React from 'react';
-import { Text } from 'react-native';
+import "../interceptors/refresh.interceptor";
 import {Appbar, BottomNavigation, useTheme} from 'react-native-paper';
-import {useState} from "react";
+import {useContext, useState} from "react";
+import ServicesScreen from "@/app/screens/ServicesScreen";
+import {AuthContext} from "@/app/context/AuthContext";
+import CalendarScreen from "@/app/screens/CalendarScreen";
+import HomeScreen from "@/app/screens/HomeScreen";
 
-const HomeRoute = () => <Text>Home</Text>;
-const CalendarRoute = () => <Text>Calendar</Text>;
-const ServicesRoute = () => <Text>Services</Text>;
+const HomeRoute = () => <HomeScreen />;
+const CalendarRoute = () => <CalendarScreen />;
+const ServicesRoute = () => <ServicesScreen />;
 
 export default function AppTabs() {
     const theme = useTheme();
+
+    const { logout } = useContext(AuthContext);
+
     const [index, setIndex] = useState(0);
     const [routes] = useState([
         { key: 'home', title: 'Home', focusedIcon: 'home' },
         { key: 'calendar', title: 'Calendar', focusedIcon: 'calendar' },
-        { key: 'services', title: 'Services', focusedIcon: 'brush' },
+        { key: 'services', title: 'Services', focusedIcon: 'creation' },
     ]);
 
     const renderScene = BottomNavigation.SceneMap({
@@ -26,7 +33,8 @@ export default function AppTabs() {
         <Appbar.Header elevated={true} style={{
             backgroundColor: theme.colors.primary,
         }}>
-            <Appbar.Content style={{ elevation: 8 }} title={routes[index].title} />
+            <Appbar.Content color={theme.colors.background} style={{ elevation: 8 }} title={routes[index].title} />
+            <Appbar.Action icon="logout" onPress={logout}>Logout</Appbar.Action>
         </Appbar.Header>
         <BottomNavigation
             sceneAnimationEnabled={true}
@@ -35,6 +43,7 @@ export default function AppTabs() {
             renderScene={renderScene}
             shifting={false}
             barStyle={{ height: 72, backgroundColor: theme.colors.primary }}
+            inactiveColor={theme.colors.background}
         />
     </>
     );
