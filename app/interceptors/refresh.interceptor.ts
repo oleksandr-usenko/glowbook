@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { HTTP, SERVER_BASE } from '../services/http';
 import {getToken, setToken} from "@/app/utils/authStorage";
+import {publicRoutes} from "@/app/services/auth";
 
 let isRefreshing = false;
 let failedQueue: {
@@ -31,7 +32,7 @@ HTTP.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        if (error.response?.status === 401 && !publicRoutes.includes(originalRequest.url) && !originalRequest._retry) {
             originalRequest._retry = true;
 
             if (isRefreshing) {

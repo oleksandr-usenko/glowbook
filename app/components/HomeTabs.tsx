@@ -29,12 +29,16 @@ export default function AppTabs() {
         services: ServicesRoute,
     });
 
+    const handleLogout = () => {
+        logout();
+    }
+
     return (<>
         <Appbar.Header elevated={true} style={{
             backgroundColor: theme.colors.primary,
         }}>
             <Appbar.Content color={theme.colors.background} style={{ elevation: 8 }} title={routes[index].title} />
-            <Appbar.Action icon="logout" onPress={logout}>Logout</Appbar.Action>
+            <Appbar.Action icon="logout" onPress={handleLogout} />
         </Appbar.Header>
         <BottomNavigation
             sceneAnimationEnabled={true}

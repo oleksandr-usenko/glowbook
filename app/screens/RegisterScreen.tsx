@@ -17,7 +17,7 @@ export default function RegisterScreen({ navigation }: Props){
     }
 
     return (
-        <View className="p-5">
+        <View className="p-5 my-auto">
             <Card>
                 <Card.Content className="flex flex-col gap-2">
                     <UIInput label="Email" value={email} onChangeText={setEmail} />

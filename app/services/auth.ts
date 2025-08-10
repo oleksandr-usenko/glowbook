@@ -5,10 +5,12 @@ type TAuthPayload = {
     password: string;
 };
 
+export const publicRoutes = ["/api/auth/login", "/api/auth/signup"];
+
 export const login = async (payload: TAuthPayload) => {
-    return await HTTP.post(`/api/auth/login`, payload, { withCredentials: true });
+    return await HTTP.post(publicRoutes[0], payload, { withCredentials: true });
 };
 
 export const register = async (payload: TAuthPayload) => {
-    return await HTTP.post(`/api/auth/signup`, payload);
+    return await HTTP.post(publicRoutes[1], payload);
 };

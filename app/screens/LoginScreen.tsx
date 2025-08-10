@@ -6,11 +6,17 @@ import {UIInput} from "@/app/components/UI/UIInput";
 import {login} from "@/app/services/auth";
 import {setToken} from "@/app/utils/authStorage";
 import {AuthContext} from "@/app/context/AuthContext";
+import {NativeStackScreenProps} from "@react-navigation/native-stack";
+import {TRootStackParamsList} from "@/app/screens/types";
+import {TAPIError} from "@/app/services/types.http";
+import {UIErrorMessage} from "@/app/components/UI/UIErrorMessage";
 
-export default function LoginScreen(){
+type Props = NativeStackScreenProps<TRootStackParamsList, "Login">
+
+export default function LoginScreen({ navigation }: Props){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState<TAPIError | null>(null);
     const { setIsAuthenticated } = useContext(AuthContext);
 
     const handleLogin = () => {
@@ -23,7 +29,9 @@ export default function LoginScreen(){
                         setIsAuthenticated(true);
                     })
             })
-            .catch((err) => setError(err));
+            .catch((err) => {
+                setError(err.response?.data || { message: err.message || 'Unknown error' });
+            });
     };
 
     return (
@@ -44,7 +52,7 @@ export default function LoginScreen(){
                         left={<TextInput.Icon icon='lock' forceTextInputFocus={false} onPress={undefined} />}
                         right={<TextInput.Icon icon='eye' />}
                     />
-                    {error && <Text>{error}</Text>}
+                    {error && <UIErrorMessage message={error.message} />}
                     <Button mode="contained" onPress={handleLogin}>Login</Button>
                     <Button mode="contained" onPress={() => navigation.navigate('Register')}>Register</Button>
                 </Card.Content>

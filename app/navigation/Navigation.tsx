@@ -10,14 +10,12 @@ import LoginScreen from "@/app/screens/LoginScreen";
 import RegisterScreen from "@/app/screens/RegisterScreen";
 
 export default function AppNavigator() {
-    const { isAuthenticated } = useContext(AuthContext);
-    const Stack = createNativeStackNavigator();
-
+    const { isSignedIn, isSignedOut } = useContext(AuthContext);
     const RootStack = createNativeStackNavigator({
         screens: {},
         groups: {
             SignedIn: {
-                if: isAuthenticated,
+                if: isSignedIn,
                 screens: {
                     Home: HomeScreen,
                     Services: ServicesScreen,
@@ -25,7 +23,7 @@ export default function AppNavigator() {
                 },
             },
             SignedOut: {
-                if: !isAuthenticated,
+                if: isSignedOut,
                 screens: {
                     Login: LoginScreen,
                     Register: RegisterScreen,
@@ -33,10 +31,12 @@ export default function AppNavigator() {
             },
         },
     });
+    const Stack = createNativeStackNavigator();
+
 
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {isAuthenticated ? (
+            {isSignedIn() ? (
                 <Stack.Screen name="AppTabs" component={AppTabs} />
             ) : (
                 <Stack.Screen name="Auth" component={AuthNavigator} />

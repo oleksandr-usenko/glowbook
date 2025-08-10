@@ -3,15 +3,17 @@ import React, {createContext, useState, useEffect, PropsWithChildren} from 'reac
 import {clearToken, getToken} from '../utils/authStorage';
 
 export const AuthContext = createContext({
-    isAuthenticated: false,
-    setIsAuthenticated: (value: boolean) => {
-    },
-    logout: () => {
-    },
+    isSignedIn: (): boolean => false,
+    isSignedOut: (): boolean => true,
+    setIsAuthenticated: (value: boolean) => {},
+    logout: () => {},
 });
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    const isSignedIn = () => isAuthenticated;
+    const isSignedOut = () => !isAuthenticated;
 
     const logout = () => {
         Promise
@@ -27,7 +29,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, logout }}>
+        <AuthContext.Provider value={{ isSignedIn, isSignedOut, setIsAuthenticated, logout }}>
             {children}
         </AuthContext.Provider>
     );
