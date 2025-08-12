@@ -1,8 +1,10 @@
 import {ScrollView, View} from "react-native";
-import {useGetServices} from "@/app/entities/services/useGetServices";
-import {useEffect} from "react";
+import {useGetServices} from "@/app/entities/services/queries/useGetServices";
 import {ServiceItem} from "@/app/entities/services/ServiceItem";
 import {TService} from "@/app/entities/services/types";
+import {Button} from "react-native-paper";
+import {AddServiceDialog} from "@/app/entities/services/AddServiceDialog";
+import {useState} from "react";
 
 const ServiceWrapper = (service: TService) =>
     <View key={service.id} className="mb-4">
@@ -10,14 +12,13 @@ const ServiceWrapper = (service: TService) =>
     </View>
 
 export default function ServicesScreen() {
+    const [addDialogVisible, setAddDialogVisible] = useState(false);
     const { data: services } = useGetServices();
-    useEffect(() => {
-        console.log(services);
-    }, [services])
 
     return (
         <ScrollView className="flex flex-col gap-4 p-4">
+            <Button onPress={() => setAddDialogVisible(true)}>Add new service</Button>
             {services && services.map(ServiceWrapper)}
-        </ScrollView>
-    )
+            <AddServiceDialog open={addDialogVisible} onClose={() => setAddDialogVisible(false)} />)
+        </ScrollView>)
 }

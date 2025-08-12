@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const SERVER_BASE = "http://localhost:8080";
+export const SERVER_BASE = "https://0148ea728320.ngrok-free.app";
 export const HTTP = axios.create({
     baseURL: SERVER_BASE,
 });

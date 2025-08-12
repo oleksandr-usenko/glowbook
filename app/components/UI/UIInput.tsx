@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { View, Text, TextInput as RNTextInput } from 'react-native';
-import {TextInput, TextInputProps, useTheme} from 'react-native-paper';
+import {TextInput, TextInputProps} from 'react-native-paper';
 
 type UIInputProps = {
     helperText?: string;

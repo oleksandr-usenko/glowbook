@@ -1,4 +1,4 @@
-import {Card, Text, useTheme} from "react-native-paper";
+import {Card, Text} from "react-native-paper";
 import {Dimensions, Image, View} from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import {TService} from "@/app/entities/services/types";
@@ -11,22 +11,26 @@ type Props = {
 const { width } = Dimensions.get("window");
 
 export const ServiceItem = ({ service }: Props) => {
-
     return (
-        <Card style={{ overflow: "hidden" }}>
-            <View>
+        <Card>
+            <View style={{ overflow: "hidden", borderTopLeftRadius: 4, borderTopRightRadius: 4 }}>
                 <Carousel
                     loop
-                    width={width - 32} // Card padding
+                    width={width - 32}
                     height={200}
                     data={service.media_urls || []}
                     scrollAnimationDuration={500}
+                    vertical={false}
+                    onConfigurePanGesture={(gesture) => {
+                        'worklet';
+                        gesture.activeOffsetX([-10, 10]);
+                    }}
                     renderItem={({ item }) => (
                         <Image
                             source={{ uri: item }}
                             style={{
                                 height: 200,
-                                resizeMode: "cover", // ✅ so it fills nicely
+                                resizeMode: "cover",
                             }}
                         />
                     )}
