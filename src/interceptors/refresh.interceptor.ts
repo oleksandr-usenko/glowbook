@@ -1,8 +1,8 @@
 // httpInterceptor.ts
 import axios from 'axios';
-import { HTTP, SERVER_BASE } from '../services/http';
-import {getToken, setToken} from "@/app/utils/authStorage";
-import {publicRoutes} from "@/app/services/auth";
+import {HTTP, SERVER_BASE} from '../services/http';
+import {getToken, setToken} from "@/src/utils/authStorage";
+import {publicRoutes} from "@/src/services/auth";
 
 let isRefreshing = false;
 let failedQueue: {
@@ -14,6 +14,7 @@ let failedQueue: {
 export function setAuthHeader(token: string) {
     HTTP.defaults.headers.common['Authorization'] = `${token}`;
 }
+
 // Handle retry queue
 const processQueue = (error: any, token: string | null = null) => {
     failedQueue.forEach((prom) => {
@@ -59,9 +60,9 @@ HTTP.interceptors.response.use(
 
                     const res = await axios.post(
                         `${SERVER_BASE}/api/auth/refresh`,
-                        { refreshToken },
+                        {refreshToken},
                         {
-                            headers: { 'Content-Type': 'application/json' },
+                            headers: {'Content-Type': 'application/json'},
                         }
                     );
 

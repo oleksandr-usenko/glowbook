@@ -1,7 +1,7 @@
 import {useMutation} from "@tanstack/react-query";
-import {createService} from "@/app/services/service";
+import {createService} from "@/src/services/service";
 import {ImagePickerAsset} from "expo-image-picker";
-import {useInvalidateServices} from "@/app/entities/services/queries/useInvalidateServices";
+import {useInvalidateServices} from "@/src/entities/services/queries/useInvalidateServices";
 
 type TCreateServicePayload = {
     name: string;
@@ -12,7 +12,7 @@ type TCreateServicePayload = {
 }
 
 export const useCreateService = () => {
-    const { invalidateServices } = useInvalidateServices();
+    const {invalidateServices} = useInvalidateServices();
     return useMutation({
         mutationFn: (payload: TCreateServicePayload) => {
             const formData = new FormData();

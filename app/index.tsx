@@ -1,13 +1,11 @@
 import "./global.css";
 import {DefaultTheme, PaperProvider} from "react-native-paper";
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import {setAuthHeader} from "@/app/interceptors/refresh.interceptor";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {setAuthHeader} from "@/src/interceptors/refresh.interceptor";
 import {useEffect} from "react";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AppNavigator from "@/app/navigation/Navigation";
-import {AuthProvider} from "@/app/context/AuthContext";
-import {getToken} from "@/app/utils/authStorage";
+import {AuthProvider} from "@/src/context/AuthContext";
+import {getToken} from "@/src/utils/authStorage";
 
 
 const queryClient = new QueryClient();
@@ -81,16 +79,15 @@ export default function Index() {
         initializeAuthHeader();
     }, [])
 
-  return (
-      <QueryClientProvider client={queryClient}>
-          <PaperProvider
-              theme={customTheme}
-              settings={{ icon: (props) => <MaterialCommunityIcons {...props} /> }}
-          >
-              <AuthProvider>
-                <AppNavigator />
-              </AuthProvider>
-          </PaperProvider>
-      </QueryClientProvider>
-  );
+    return (
+        <QueryClientProvider client={queryClient}>
+            <PaperProvider
+                theme={customTheme}
+            >
+                <AuthProvider>
+                    <AppNavigator/>
+                </AuthProvider>
+            </PaperProvider>
+        </QueryClientProvider>
+    );
 }

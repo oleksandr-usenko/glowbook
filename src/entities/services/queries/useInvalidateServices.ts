@@ -1,5 +1,5 @@
 import {useQueryClient} from "@tanstack/react-query";
-import {QUERY_SERVICES} from "@/app/entities/services/queries/useGetServices";
+import {QUERY_SERVICES} from "@/src/entities/services/queries/useGetServices";
 
 export const useInvalidateServices = () => {
     const queryClient = useQueryClient();
@@ -10,5 +10,5 @@ export const useInvalidateServices = () => {
         });
     };
 
-    return { invalidateServices };
+    return {invalidateServices};
 }

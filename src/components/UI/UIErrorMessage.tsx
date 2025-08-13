@@ -1,12 +1,14 @@
-import { Text } from "react-native-paper";
+import {Text} from "react-native-paper";
 
 type Props = {
     message: string;
 }
 
-export const UIErrorMessage = ({ message }: Props)=>  {
+const UIErrorMessage = ({message}: Props) => {
     return <Text style={{
         color: "red",
         padding: 4,
     }}>{message}</Text>
 }
+
+export default UIErrorMessage;

@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { Dialog, DialogProps, Portal } from "react-native-paper";
+import {ReactNode} from "react";
+import {Dialog, DialogProps, Portal} from "react-native-paper";
 import {
     Keyboard,
     KeyboardAvoidingView,
@@ -15,14 +15,14 @@ type Props = {
 } & Required<Pick<DialogProps, "visible" | "onDismiss">> &
     Omit<DialogProps, "children">;
 
-export const UIDialog = ({ title, content, actions, ...rest }: Props) => {
+const UIDialog = ({title, content, actions, ...rest}: Props) => {
     return (
         <Portal>
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : undefined}
-                style={{ flex: 1 }}
+                style={{flex: 1}}
             >
-                <Dialog theme={{ roundness: 4 }} {...rest} style={{ width: "90%" }}>
+                <Dialog theme={{roundness: 4}} {...rest} style={{width: "90%"}}>
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                         <View>
                             {title && <Dialog.Title>{title}</Dialog.Title>}
@@ -35,4 +35,6 @@ export const UIDialog = ({ title, content, actions, ...rest }: Props) => {
         </Portal>
     );
 };
+
+export default UIDialog;
 

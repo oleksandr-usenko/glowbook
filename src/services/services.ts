@@ -1,5 +1,5 @@
-import {HTTP} from "@/app/services/http";
-import {TService} from "@/app/entities/services/types";
+import {HTTP} from "@/src/services/http";
+import {TService} from "@/src/entities/services/types";
 
 export const createService = async (formData: FormData) => {
     return await HTTP.post(`/api/services`, formData, {

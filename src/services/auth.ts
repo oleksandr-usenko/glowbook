@@ -1,4 +1,4 @@
-import {HTTP} from "@/app/services/http";
+import {HTTP} from "@/src/services/http";
 
 type TAuthPayload = {
     email: string;
@@ -8,7 +8,7 @@ type TAuthPayload = {
 export const publicRoutes = ["/api/auth/login", "/api/auth/signup"];
 
 export const login = async (payload: TAuthPayload) => {
-    return await HTTP.post(publicRoutes[0], payload, { withCredentials: true });
+    return await HTTP.post(publicRoutes[0], payload, {withCredentials: true});
 };
 
 export const register = async (payload: TAuthPayload) => {

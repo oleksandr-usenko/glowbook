@@ -1,5 +1,5 @@
-import React, { forwardRef } from 'react';
-import { View, Text, TextInput as RNTextInput } from 'react-native';
+import React, {forwardRef} from 'react';
+import {View, Text, TextInput as RNTextInput} from 'react-native';
 import {TextInput, TextInputProps} from 'react-native-paper';
 
 type UIInputProps = {
@@ -7,8 +7,8 @@ type UIInputProps = {
     errorMessage?: string | null;
 } & TextInputProps;
 
-export const UIInput = forwardRef<RNTextInput, UIInputProps>(
-    ({ errorMessage, helperText, style, ...rest }, ref) => {
+const UIInput = forwardRef<RNTextInput, UIInputProps>(
+    ({errorMessage, helperText, style, ...rest}, ref) => {
         const isError = !!errorMessage || rest.error;
 
         return (
@@ -28,6 +28,7 @@ export const UIInput = forwardRef<RNTextInput, UIInputProps>(
         );
     }
 );
-
 UIInput.displayName = 'UIInput';
+
+export default UIInput;
 
