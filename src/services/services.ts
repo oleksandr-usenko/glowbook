@@ -1,5 +1,5 @@
 import {HTTP} from "@/src/services/http";
-import {TService} from "@/src/entities/services/types";
+import {TService, TUpdateServicePayload} from "@/src/entities/services/types";
 
 export const createService = async (formData: FormData) => {
     return await HTTP.post(`/api/services`, formData, {
@@ -9,6 +9,10 @@ export const createService = async (formData: FormData) => {
     });
 };
 
+export const updateService = async (id: number, payload: TUpdateServicePayload) => {
+    return await HTTP.put<TService>(`/api/services/${id}`, payload);
+}
 export const getServices = async () => {
     return await HTTP.get<TService[]>(`/api/services`);
 };
+

@@ -6,13 +6,14 @@ import {HTMLProps} from "react";
 
 type Props = {
     service: TService;
+    onPress: () => void;
 } & HTMLProps<any>
 
 const {width} = Dimensions.get("window");
 
-const ServiceItem = ({service}: Props) => {
+const ServiceItem = ({service, onPress}: Props) => {
     return (
-        <Card>
+        <Card onPress={onPress}>
             <View style={{overflow: "hidden", borderTopLeftRadius: 4, borderTopRightRadius: 4}}>
                 <Carousel
                     loop

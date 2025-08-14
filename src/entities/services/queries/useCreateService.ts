@@ -2,12 +2,9 @@ import {useMutation} from "@tanstack/react-query";
 import {createService} from "@/src/services/service";
 import {ImagePickerAsset} from "expo-image-picker";
 import {useInvalidateServices} from "@/src/entities/services/queries/useInvalidateServices";
+import {TUpdateServicePayload} from "@/src/entities/services/types";
 
-type TCreateServicePayload = {
-    name: string;
-    description?: string;
-    price: string;
-    duration: string;
+type TCreateServicePayload = TUpdateServicePayload & {
     images: ImagePickerAsset[];
 }
 
