@@ -12,16 +12,19 @@ type Props = {
 const {width} = Dimensions.get("window");
 
 const ServiceItem = ({service, onPress}: Props) => {
+    const images = service.media ? service.media.map(m => m.url) : []
+
     return (
         <Card onPress={onPress}>
-            <View style={{overflow: "hidden", borderTopLeftRadius: 4, borderTopRightRadius: 4}}>
+            <View style={{overflow: "hidden", borderTopLeftRadius: 32, borderTopRightRadius: 32}}>
                 <Carousel
                     loop
-                    width={width - 32}
+                    width={width - 28}
                     height={200}
-                    data={service.media_urls || []}
+                    data={images}
                     scrollAnimationDuration={500}
                     vertical={false}
+                    style={{borderTopLeftRadius: 4, borderTopRightRadius: 4}}
                     onConfigurePanGesture={(gesture) => {
                         'worklet';
                         gesture.activeOffsetX([-10, 10]);
@@ -41,8 +44,8 @@ const ServiceItem = ({service, onPress}: Props) => {
                 <Text>{service.name}</Text>
                 {service.description && <Text>{service.description}</Text>}
                 <View style={{flexDirection: "row", flexWrap: "wrap", gap: 8}}>
-                    <Chip icon="clock-outline" elevated>{service.duration}</Chip>
-                    <Chip elevated>{service.price}</Chip>
+                    <Chip icon="clock-outline" elevated>{service.duration} min</Chip>
+                    <Chip icon={`currency-${service.currency.toLowerCase()}`} elevated>{service.price}</Chip>
                 </View>
             </Card.Content>
         </Card>

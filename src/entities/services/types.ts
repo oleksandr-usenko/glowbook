@@ -7,8 +7,14 @@ export type TService = {
     currency: "USD" | "EUR" | "UAH";
     timestamp: string;
     description?: string;
-    media_urls?: string[];
+    media?: TMediaItem[];
 };
+
+export type TMediaItem = {
+    url: string;
+    type: "image" | "video";
+    public_id: string;
+}
 
 export type TUpdateServicePayload = Pick<TService,
     | "name"
