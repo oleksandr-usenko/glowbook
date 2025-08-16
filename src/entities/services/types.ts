@@ -11,9 +11,12 @@ export type TService = {
 };
 
 export type TMediaItem = {
-    url: string;
-    type: "image" | "video";
+    uri: string;
+    mimeType: string;
+    type?: string;
     public_id: string;
+    fileName: string;
+    order?: number;
 }
 
 export type TUpdateServicePayload = Pick<TService,

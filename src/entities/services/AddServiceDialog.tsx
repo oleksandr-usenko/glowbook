@@ -1,4 +1,4 @@
-import {Button, Text} from "react-native-paper";
+import {Button, SegmentedButtons, Text, useTheme} from "react-native-paper";
 import UIDialog from "@/src/components/UI/UIDialog";
 import {useRef, useState} from "react";
 import {ImagePickerAsset} from "expo-image-picker";
@@ -15,7 +15,36 @@ type Props = {
     service: TService | undefined;
 }
 
-const DialogTitle = () => <Text>Add new service</Text>;
+type DialogTitleProps = {
+    activeScreen: "form" | "gallery";
+    setScreen: (screen: "form" | "gallery") => void;
+}
+
+const DialogTitle = ({activeScreen, setScreen}: DialogTitleProps) => {
+    const theme = useTheme();
+    return (<View className="flex justify-between">
+        <View style={{marginBottom: 16}}>
+            <Text variant="headlineSmall">Add new service</Text>
+        </View>
+        <SegmentedButtons density="small" theme={{
+            colors: {
+                secondaryContainer: theme.colors.primary,
+                onSecondaryContainer: theme.colors.onPrimary
+            }
+        }}
+                          style={{width: "100%"}} value={activeScreen} onValueChange={setScreen}
+                          buttons={[
+                              {
+                                  value: "form",
+                                  icon: "note-edit-outline",
+                              },
+                              {
+                                  value: "gallery",
+                                  icon: "image-outline",
+                              },
+                          ]}/>
+    </View>)
+}
 type DialogContentRef = {
     getValues: () => {
         name: string;
@@ -27,39 +56,18 @@ type DialogContentRef = {
     };
 };
 
-const DialogActions = ({onSave}: { onSave: () => void }) => <Button onPress={onSave}>Save</Button>
-
 const AddServiceDialog = ({open, onClose, service}: Props) => {
-    const contentRef = useRef<DialogContentRef>(null);
     const [snackbarText, setSnackbarText] = useState("");
-    const {mutateAsync: createService} = useCreateService();
-    const {mutateAsync: updateService, error, isError} = useUpdateService()
 
-    const onSave = async () => {
-        if (contentRef.current) {
-            const payload = contentRef.current.getValues();
-            if (!payload.price || !payload.duration) return;
-            try {
-                if (service) {
-                    await updateService({id: service.id, payload});
-                } else {
-                    await createService(payload);
-                }
-                setSnackbarText("All good!");
-                onClose();
-            } catch (err) {
-                setSnackbarText("Something went wrong! " + err);
-            }
-        }
-    }
+    const [activeScreen, setActiveScreen] = useState<"form" | "gallery">("form");
+
     return (
         <View>
             <UIDialog
                 visible={open}
                 onDismiss={onClose}
-                title={isError ? <Text>{(error as any).response?.data?.message}</Text> : <DialogTitle/>}
-                content={<AddServiceForm service={service} ref={contentRef}/>}
-                actions={<DialogActions onSave={onSave}/>}
+                title={<DialogTitle activeScreen={activeScreen} setScreen={setActiveScreen}/>}
+                content={<AddServiceForm activeScreen={activeScreen} service={service} close={onClose}/>}
             />
             <UISnackbar visible={snackbarText !== ""} onDismiss={() => setSnackbarText("")}>
                 <Text>{snackbarText}</Text>

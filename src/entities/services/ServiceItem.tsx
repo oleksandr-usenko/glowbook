@@ -12,7 +12,7 @@ type Props = {
 const {width} = Dimensions.get("window");
 
 const ServiceItem = ({service, onPress}: Props) => {
-    const images = service.media ? service.media.map(m => m.url) : []
+    const images = service.media ? service.media.map(m => m.uri) : []
 
     return (
         <Card onPress={onPress}>

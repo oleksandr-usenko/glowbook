@@ -6,9 +6,25 @@ import {useEffect} from "react";
 import AppNavigator from "@/app/navigation/Navigation";
 import {AuthProvider} from "@/src/context/AuthContext";
 import {getToken} from "@/src/utils/authStorage";
+import {ErrorToastProvider, useErrorToast} from "@/src/context/ErrorContext";
 
+let showErrorGlobal: (err: any) => void;
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            onError: (error: any) => {
+                // Pass generic errors to toast
+                showErrorGlobal(error);
+            },
+        },
+        mutations: {
+            onError: (error: any) => {
+                showErrorGlobal(error);
+            },
+        },
+    },
+});
 
 export const customTheme = {
     ...DefaultTheme,
@@ -72,6 +88,14 @@ const initializeAuthHeader = async () => {
     const token = await getToken("accessToken")
     setAuthHeader(token || "");
 }
+const ErrorToastBridge = () => {
+    const {showError} = useErrorToast();
+    showErrorGlobal = (err) => {
+        const message = err?.response?.data?.message || "Something went wrong";
+        showError(message);
+    };
+    return null;
+}
 
 
 export default function Index() {
@@ -81,13 +105,16 @@ export default function Index() {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <PaperProvider
-                theme={customTheme}
-            >
-                <AuthProvider>
-                    <AppNavigator/>
-                </AuthProvider>
-            </PaperProvider>
+            <ErrorToastProvider>
+                <ErrorToastBridge/>
+                <PaperProvider
+                    theme={customTheme}
+                >
+                    <AuthProvider>
+                        <AppNavigator/>
+                    </AuthProvider>
+                </PaperProvider>
+            </ErrorToastProvider>
         </QueryClientProvider>
     );
 }

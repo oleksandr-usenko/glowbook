@@ -22,7 +22,7 @@ const UIDialog = ({title, content, actions, ...rest}: Props) => {
                 behavior={Platform.OS === "ios" ? "padding" : undefined}
                 style={{flex: 1}}
             >
-                <Dialog theme={{roundness: 4}} {...rest} style={{width: "90%"}}>
+                <Dialog theme={{roundness: 4}} {...rest}>
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                         <View>
                             {title && <Dialog.Title>{title}</Dialog.Title>}

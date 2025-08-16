@@ -20,6 +20,7 @@ export const useCreateService = () => {
                 formData.append("description", payload.description);
             }
             formData.append("price", String(payload.price));
+            formData.append("currency", String(payload.currency));
             payload.images.forEach((file, index) => formData.append("media", {
                 uri: file.uri,
                 name:
