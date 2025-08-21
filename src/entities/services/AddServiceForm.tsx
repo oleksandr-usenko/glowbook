@@ -10,6 +10,7 @@ import {useUpdateServiceMediaOrder} from "@/src/entities/services/queries/useUpd
 import {useCreateService} from "@/src/entities/services/queries/useCreateService";
 import {useUpdateService} from "@/src/entities/services/queries/useUpdateService";
 import {CurrencySelector} from "@/src/components/CurrencySelector";
+import {useDeleteServiceMedia} from "@/src/entities/services/queries/useDeleteServiceMedia";
 
 type ServiceFormProps = {
     service: TService | undefined;
@@ -20,10 +21,11 @@ type ServiceFormProps = {
 export type GenericImage = ImagePickerAsset | TMediaItem;
 
 const AddServiceForm = ({service, activeScreen, close}: ServiceFormProps) => {
-    const {mutateAsync: uploadImages} = useUpdateMedia();
+    const {mutateAsync: uploadImages, isPending: isUploading} = useUpdateMedia();
     const {mutateAsync: updateMediaOrder} = useUpdateServiceMediaOrder();
-    const {mutateAsync: createService} = useCreateService();
-    const {mutateAsync: updateService} = useUpdateService();
+    const {mutateAsync: createService, isPending: isCreating} = useCreateService();
+    const {mutateAsync: updateService, isPending: isUpdating} = useUpdateService();
+    const {mutateAsync: deleteServiceMedia} = useDeleteServiceMedia();
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -34,6 +36,7 @@ const AddServiceForm = ({service, activeScreen, close}: ServiceFormProps) => {
 
     const [currencyPickerOpen, setCurrencyPickerOpen] = useState(false);
     const [anchorPosition, setAnchorPosition] = useState<{ x: number; y: number } | null>(null);
+    const [deletionStack, setDeletionStack] = useState<TMediaItem["public_id"][]>([]);
 
     const iconRef = useRef<View>(null);
 
@@ -81,6 +84,16 @@ const AddServiceForm = ({service, activeScreen, close}: ServiceFormProps) => {
             }));
             updateMediaOrder({id: service.id, media: normalizedMedia});
         }
+    }
+
+    const handleDeleteMedia = async (item: GenericImage) => {
+        const mediaId = "public_id" in item ? item.public_id : undefined;
+        if (service && mediaId) {
+            setDeletionStack((old) => [...old, mediaId]);
+            await deleteServiceMedia({serviceId: service.id, mediaId});
+            setDeletionStack((old) => [...old.filter(i => i !== mediaId)]);
+        }
+        setImages((old) => [...old.filter(i => i.fileName !== item.fileName)]);
     }
 
     const onSave = async () => {
@@ -131,13 +144,17 @@ const AddServiceForm = ({service, activeScreen, close}: ServiceFormProps) => {
               />
               <Button icon="check" style={{width: "100%"}}
                       mode="contained"
+                      loading={isCreating || isUpdating}
                       onPress={onSave}>Save</Button>
             </View>}
             {activeScreen === "gallery" &&
               <AddServiceGallery
                 images={images}
+                isUploading={isUploading}
+                isDeleting={deletionStack}
                 setImages={handleImages}
                 setOrder={handleOrder}
+                onDelete={handleDeleteMedia}
               />}
         </View>
     )

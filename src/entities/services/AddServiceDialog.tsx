@@ -45,16 +45,6 @@ const DialogTitle = ({activeScreen, setScreen}: DialogTitleProps) => {
                           ]}/>
     </View>)
 }
-type DialogContentRef = {
-    getValues: () => {
-        name: string;
-        description: string;
-        price: number | null;
-        currency: "UAH" | "USD" | "EUR";
-        duration: number | null;
-        images: ImagePickerAsset[];
-    };
-};
 
 const AddServiceDialog = ({open, onClose, service}: Props) => {
     const [snackbarText, setSnackbarText] = useState("");
