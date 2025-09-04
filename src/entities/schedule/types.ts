@@ -16,6 +16,11 @@ export type TSchedule = {
 }
 
 export type TScheduleRange = {
+    start: number;
+    end: number;
+}
+
+export type TScheduleRangePayload = {
     start: string;
     end: string;
 }

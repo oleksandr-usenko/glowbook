@@ -20,9 +20,13 @@ const UIDialog = ({title, content, actions, ...rest}: Props) => {
         <Portal>
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : undefined}
-                style={{flex: 1}}
+                style={{
+                    flex: 1
+                }}
             >
-                <Dialog theme={{roundness: 4}} {...rest}>
+                <Dialog theme={{roundness: 4}} {...rest} style={{
+                    alignSelf: "center",
+                }}>
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                         <View>
                             {title && <Dialog.Title>{title}</Dialog.Title>}
